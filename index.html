@@ -5,7 +5,6 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
   </head>
   <body class="mixpanel-platform-body">
     <div class="mixpanel-platform-section">
@@ -69,6 +68,7 @@
         //Building out profiles  
         MP.api.people({where: propertyName, page: 0}).done(function(results) {
           var sessionId = results.values()['session_id'];
+          console.log(results.values().values);
           numPeople = Object.keys(results.values().results).length;
           if (numPeople == 1000) {
             pageNum++;
@@ -97,7 +97,6 @@
           if(data == '') {
             return;
           }
-          fileName = $('#file input:first').val();
           console.log(data);
           // JSONToCSVConvertor(data, fileName);
         });
