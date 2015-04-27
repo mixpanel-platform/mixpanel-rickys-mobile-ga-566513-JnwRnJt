@@ -47,7 +47,7 @@
               "Property: <strong>" + propertyName + 
               "</strong><br># People profiles that match: <strong>" + totalProfiles + "</strong>")
             .css("color", "rgb(95,105,131)");
-            runQuery(output);
+            // runQuery(output);
           }; 
         })
       };
@@ -75,7 +75,8 @@
               "Property: <strong>" + propertyName + 
               "</strong><br># People profiles that match: <strong>" + totalProfiles + "</strong>")
             .css("color", "rgb(95,105,131)");
-            runQuery(output);
+            console.log(output);
+            // runQuery(output);
           }; 
         }).fail(function() {
           $('.confirm-text')
@@ -83,17 +84,6 @@
             .css("color", "red");
         });
       });
-      
-      function runQuery(results) {
-        $('#file').submit(function(e) {
-          var data = results;
-          if(data == '') {
-            return;
-          }
-          console.log(data);
-          // JSONToCSVConvertor(data, fileName);
-        });
-      };
       
       //Creating dictionary for each property
       function getSubKeys(listOfDicts) {
