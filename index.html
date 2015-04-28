@@ -23,10 +23,6 @@
       <div id="table"></div>
     </div>
     <script>
-      //Set global variables
-      var propertyName = '';
-      var numPeople = 0;
-      var totalProfiles = 0;
       var pageNum = 0;
       var nextPage = true;
       var output = [];
@@ -34,23 +30,19 @@
         firstColHeader: 'Distinct ID'
       });
           
-      //Function for pagination
-      function getAdditionalProfiles(pageNum, sessionId, output){
+      // Function for pagination
+      function getAdditionalProfiles(pageNum, sessionId, output, callback){
         MP.api.people({where: propertyName, page: pageNum, session_id: sessionId}).done(function(peopleProf) {
           numPeople = Object.keys(peopleProf.values().results).length;
-          console.log(peopleProf.values());
           if (numPeople == 1000) {
             pageNum++;
             output.push(peopleProf.values().results);
-            getProfiles(pageNum, sessionId, output);
-          } else { // ending iteration
+            getAdditionalProfiles(pageNum, sessionId, output);
+          } else { 
+            // Ending iteration
             output.push(peopleProf.values().results)
             totalProfiles = (pageNum)*1000 + numPeople;
-            $('.confirm-text').html(
-              "Property: <strong>" + propertyName + 
-              "</strong><br># People profiles that match: <strong>" + totalProfiles + "</strong>")
-            .css("color", "rgb(95,105,131)");
-            // runQuery(output);
+            callback(propertyName, output, totalProfiles);
           }; 
         })
       };
@@ -59,32 +51,36 @@
       //Record selector for profiles
       $('#property').submit(function(e) {
         e.preventDefault();
-        propertyName = $('#property input:first').val();
+        var propertyName = $('#property input:first').val();
         
         //Building out profiles  
         MP.api.people({where: propertyName, page: 0}).done(function(results) {
+          
+          // This is invoked after all of the people profiles have been loaded
+          // If pagination is required, it's passed as a callback to "getAdditionalProfiles"
+          function finishPagination(propertyName, output, totalProfiles) {
+            $('.confirm-text').html("Property: <strong>" + propertyName + "</strong><br># People profiles that match: <strong>" + totalProfiles + "</strong>").css("color", "rgb(95,105,131)");
+            renderTable(output);
+          };
+          
+          // Requesting the People API
           var sessionId = results.values()['session_id'];
-          console.log(results.values().values);
-          numPeople = Object.keys(results.values().results).length;
-          if (numPeople == 1000) {
-            pageNum++;
+          var numPeople = Object.keys(results.values().results).length;
+          var pageNum = 0;
+          // If the page size is not 1000, we can continue. Otherwise, we need to paginate.
+          if (numPeople !== 1000) {
             output = [results.values().results];
-            console.log(output);
-            getAdditionalProfiles(pageNum, sessionId, output)
+            var totalProfiles = numPeople;
+            finishPagination(propertyName, output, totalProfiles);
           } else {
             output = [results.values().results];
-            totalProfiles = numPeople
-            $('.confirm-text').html(
-              "Property: <strong>" + propertyName + 
-              "</strong><br># People profiles that match: <strong>" + totalProfiles + "</strong>")
-            .css("color", "rgb(95,105,131)");
             console.log(output);
-            renderTable(output);
-          }; 
+            pageNum++;
+            getAdditionalProfiles(pageNum, sessionId, output);
+          };
+          
         }).fail(function() {
-          $('.confirm-text')
-            .html("Error: Please enter a valid property selector.")
-            .css("color", "red");
+          $('.confirm-text').html("Error: Please enter a valid property selector.").css("color", "red");
         });
       });
       
