@@ -104,7 +104,7 @@
         
         _.each(_.keys(event_list), function(profileIndex){
           var profilePropData = event_list[profileIndex]['$properties'];
-          tableData[event_list[profileIndex]['$distinct_id']] = profilePropData;
+          tableData[String(event_list[profileIndex]['$distinct_id'])] = profilePropData;
         });
         
         console.log(tableData);
