@@ -108,6 +108,8 @@
             // I'm ignoring objects for now.
             if (typeof value !== 'object') {
               profilePropData[String(propKey)] = value;
+            } else {
+              profilePropData[String(propKey)] = 'Object';
             }
           });
           tableData[String(profiles[profileIndex]['$distinct_id'])] = profilePropData;
