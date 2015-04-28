@@ -26,10 +26,10 @@
       //Set global variables
       var propertyName = '';
       var numPeople = 0;
-      var totalProfiles = 0;
-      var pageNum = 0;
-      var nextPage = true;
-      var output = [];
+      vartotalProfiles = 0;
+          pageNum = 0;
+          nextPage = true;
+          output = [];
       var peopleTable  = $('#table').MPTable({
         firstColHeader: 'Distinct ID'
       });
@@ -100,17 +100,38 @@
 
         console.log(event_list);
         
+        // This list is important because objects aren't ordered.
+        // Maintaing order is important for rendering the chart
+        var propKeys = getSubKeys(event_list);
         var tableData = {};
         
         _.each(_.keys(event_list), function(profileIndex){
-          var profilePropData = event_list[profileIndex]['$properties'];
-          tableData[String(event_list[profileIndex]['$distinct_id'])] = profilePropData;
+          var profilePropData = {};
+          _.each(propKeys, function(propKey){
+            tableData[propKey] = event_list[profileIndex]['$properties'][propKey] || undefined;
+          });
+          tableData[event_list[profileIndex]['$distinct_id']] = profilePropData;
         });
         
         console.log(tableData);
         
         peopleTable.MPTable('setData', tableData);
       };
+      
+      //Creating list of every property key
+      function getSubKeys(listOfDicts) {
+        subkeys = {};
+        //For each profile
+        _.each(_.keys(listOfDicts), function(profileIndex){
+          var profilePropData = listOfDicts[profileIndex]['$properties'];
+          _.each(_.keys(profilePropData), function(property){
+            try {
+              subkeys[property] = true;
+            } catch (e) {}
+          });
+        });
+        return subkeys;
+      };  
 
     </script>
   </body>
