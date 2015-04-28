@@ -84,32 +84,33 @@
         });
       });
       
+      // @param {Array} data - an unformatted response containing all profiles
       function renderTable(data) {
-        //Create list of profiles
-        var event_list = [];
+        // Create list of profiles
+        var profiles = [];
         for (i = 0; i < data.length; i++) {
           _.each(_.keys(data[i]), function(profileIndex){
             var profileData = data[i][profileIndex];
-            event_list.push(profileData)
+            profiles.push(profileData)
           });
         };
         
         // This array is important because objects aren't ordered.
         // Maintaing order is required for rendering the table.
-        var propKeys = getSubKeys(event_list);
+        var propKeys = getSubKeys(profiles);
         console.log(propKeys);
         var tableData = {};
         
-        _.each(_.keys(event_list), function(profileIndex){
+        _.each(_.keys(profiles), function(profileIndex){
           var profilePropData = {};
           _.each(propKeys, function(propKey){
-            value = event_list[profileIndex]['$properties'][propKey] || undefined;
+            value = profiles[profileIndex]['$properties'][propKey] || undefined;
             // I'm ignoring objects for now.
             if (typeof value !== 'object') {
               profilePropData[propKey] = value;
             }
           });
-          tableData[event_list[profileIndex]['$distinct_id']] = profilePropData;
+          tableData[profiles[profileIndex]['$distinct_id']] = profilePropData;
         });
         
         console.log(tableData);
