@@ -60,7 +60,7 @@
           // If pagination is required, it is passed as a callback to "getAdditionalProfiles".
           function finishPagination(propertyName, output, totalProfiles) {
             $('.confirm-text').html("Property: <strong>" + propertyName + "</strong><br># People profiles that match: <strong>" + totalProfiles + "</strong>").css("color", "rgb(95,105,131)");
-            renderTable(output);
+            renderTable(output, totalProfiles);
           };
           
           // Requesting the People API
@@ -84,7 +84,7 @@
       });
       
       // @param {Array} data - an unformatted response containing all profiles
-      function renderTable(data) {
+      function renderTable(data, totalProfiles) {
         // Create list of profiles
         var profiles = [];
         for (i = 0; i < data.length; i++) {
@@ -116,6 +116,7 @@
         
         console.log(tableData);
         peopleTable.MPTable('setData', tableData);
+        peopleTable.height(40 * (totalProfiles + 1));
       };
       
       //Creating list of every property key
