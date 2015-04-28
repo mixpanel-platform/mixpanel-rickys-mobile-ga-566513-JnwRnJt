@@ -76,7 +76,7 @@
             output = [results.values().results];
             console.log(output);
             pageNum++;
-            getAdditionalProfiles(propertyName, pageNum, sessionId, output);
+            getAdditionalProfiles(propertyName, pageNum, sessionId, output, finishPagination);
           };
           
         }).fail(function() {
