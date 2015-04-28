@@ -57,7 +57,7 @@
         MP.api.people({where: propertyName, page: 0}).done(function(results) {
           
           // This is invoked after all of the people profiles have been loaded
-          // If pagination is required, it's passed as a callback to "getAdditionalProfiles"
+          // If pagination is required, it is passed as a callback to "getAdditionalProfiles".
           function finishPagination(propertyName, output, totalProfiles) {
             $('.confirm-text').html("Property: <strong>" + propertyName + "</strong><br># People profiles that match: <strong>" + totalProfiles + "</strong>").css("color", "rgb(95,105,131)");
             renderTable(output);
@@ -107,10 +107,10 @@
             value = profiles[profileIndex]['$properties'][propKey] || 'undefined';
             // I'm ignoring objects for now.
             if (typeof value !== 'object') {
-              profilePropData[propKey] = value;
+              profilePropData[String(propKey)] = value;
             }
           });
-          tableData[profiles[profileIndex]['$distinct_id']] = profilePropData;
+          tableData[String(profiles[profileIndex]['$distinct_id'])] = profilePropData;
         });
         
         console.log(tableData);
