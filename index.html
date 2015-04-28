@@ -93,11 +93,9 @@
             event_list.push(profileData)
           });
         };
-
-        console.log(event_list);
         
-        // This list is important because objects aren't ordered.
-        // Maintaing order is important for rendering the chart
+        // This array is important because objects aren't ordered.
+        // Maintaing order is required for rendering the table.
         var propKeys = getSubKeys(event_list);
         console.log(propKeys);
         var tableData = {};
@@ -115,7 +113,6 @@
         });
         
         console.log(tableData);
-        
         peopleTable.MPTable('setData', tableData);
       };
       
