@@ -37,7 +37,7 @@
           if (numPeople == 1000) {
             pageNum++;
             output.push(peopleProf.values().results);
-            getAdditionalProfiles(pageNum, sessionId, output);
+            getAdditionalProfiles(propertyName, pageNum, sessionId, output, callback);
           } else { 
             // Ending iteration
             output.push(peopleProf.values().results)
