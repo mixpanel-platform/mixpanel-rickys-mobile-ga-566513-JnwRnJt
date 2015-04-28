@@ -104,7 +104,7 @@
         _.each(_.keys(profiles), function(profileIndex){
           var profilePropData = {};
           _.each(propKeys, function(propKey){
-            value = profiles[profileIndex]['$properties'][propKey] || undefined;
+            value = profiles[profileIndex]['$properties'][propKey] || 'undefined';
             // I'm ignoring objects for now.
             if (typeof value !== 'object') {
               profilePropData[propKey] = value;
