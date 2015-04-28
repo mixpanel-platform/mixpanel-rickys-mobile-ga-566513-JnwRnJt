@@ -31,7 +31,7 @@
       });
           
       // Function for pagination
-      function getAdditionalProfiles(pageNum, sessionId, output, callback){
+      function getAdditionalProfiles(propertyName, pageNum, sessionId, output, callback){
         MP.api.people({where: propertyName, page: pageNum, session_id: sessionId}).done(function(peopleProf) {
           numPeople = Object.keys(peopleProf.values().results).length;
           if (numPeople == 1000) {
@@ -76,7 +76,7 @@
             output = [results.values().results];
             console.log(output);
             pageNum++;
-            getAdditionalProfiles(pageNum, sessionId, output);
+            getAdditionalProfiles(propertyName, pageNum, sessionId, output);
           };
           
         }).fail(function() {
