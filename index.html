@@ -126,9 +126,9 @@
         _.each(_.keys(listOfDicts), function(profileIndex){
           var profilePropData = listOfDicts[profileIndex]['$properties'];
           _.each(_.keys(profilePropData), function(property){
-            try {
+            if (subkeys.indexOf(property) === -1) {
               subkeys.push(property);
-            } catch (e) {}
+            }
           });
         });
         return subkeys;
